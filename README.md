@@ -27,16 +27,17 @@ Finally, we used the best values for the learning rate and batch size to train t
 
 ## Debugging and Profiling
 
-**TODO**: Give an overview of how you performed model debugging and profiling in Sagemaker.
-
 ### Debugging
 
 Model debugging in sagemaker is done using the smdebug library which is a part of the sagemaker python sdk. The library provides a set of hooks that can be used to capture the values of tensors at different points in the training process. The library also provides a set of rules that can be used to detect common issues in the training process.</br>
-
+I used Amazon SageMaker Debugger for debugging the model to check how well the model training is happening. </br>
+We registered the model by creating a SMDebug hook in the main function and passed this hook to the train and test functions with TRAIN and EVAL mode respectively. </br>
+We also configured the Debugger Rules and Hook Parameters of what should be tracked in the notebook train_and_deploy.ipynb. </br>
 
 ### Profiling
 
-Profiling in sagemaker is also done using the
+Using Sagemaker Profiler, we monitored Instance metrics, GPU/CPU utilization and GPU/CPU memory utilization. </br>
+To use Sagemaker Profiler we created profiler rules and configurations. The output is a HTML report. </br>
 
 ### Results
 
