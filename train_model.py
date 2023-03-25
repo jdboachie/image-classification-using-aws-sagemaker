@@ -1,5 +1,5 @@
 """
-Script to perform hyperparameter optimization on a model
+Script to perform train a model
 """
 import numpy as np
 import torch
@@ -20,7 +20,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 try:
     import smdebug.pytorch as smd
 except ModuleNotFoundError:
-    print("module 'smdebug' is not installed. Probably an inference container")
+    print("[ERROR] Module 'smdebug' is not installed. Probably an inference container")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
