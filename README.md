@@ -4,9 +4,9 @@ Use AWS Sagemaker to train a pretrained model that can perform image classificat
 
 ## Project Set Up and Installation
 
-Enter AWS through the gateway in the course and open SageMaker Studio.
-Download the starter files.
-Download/Make the dataset available.
+Enter AWS through the gateway in the course and open SageMaker Studio.</br>
+Download the starter files.</br>
+Download/Make the dataset available.</br>
 
 ## Dataset
 
@@ -45,13 +45,8 @@ To use Sagemaker Profiler we created profiler rules and configurations. The outp
 
 **TODO** Remember to provide the profiler html/pdf file in your submission.
 
-
 ## Model Deployment
 
 **TODO**: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
 
 **TODO** Remember to provide a screenshot of the deployed active endpoint in Sagemaker.
-
-## Standout Suggestions
-
-**TODO (Optional):** This is where you can provide information about any standout suggestions that you have attempted.
