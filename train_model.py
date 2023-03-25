@@ -17,7 +17,10 @@ import sys
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-import smdebug.pytorch as smd
+try:
+    import smdebug.pytorch as smd
+except ModuleNotFoundError:
+    print("module 'smdebug' is not installed. Probably an inference container")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -52,7 +55,8 @@ def train(model,
           criterion,
           optimizer,
           device,
-          hook):
+          hook,
+          early_stopping):
 
     epochs = 20
     best_loss = 1e6
@@ -111,7 +115,7 @@ def train(model,
                                                                                         epoch_loss,
                                                                                         epoch_acc,
                                                                                         best_loss))
-        if loss_counter == 1:
+        if loss_counter == early_stopping:
             break
     return model
 
@@ -198,7 +202,7 @@ def create_data_loaders(data, batch_size):
 
 
 def main(args):
-    logger.info(f'Hyperparameters are LR: {args.learning_rate}, Batch Size: {args.batch_size}')
+    logger.info(f'Hyperparameters are LR: {args.learning_rate}, Batch Size: {args.batch_size}, Early Stopping: {args.early_stopping_rounds}')
     logger.info(f'Data Paths: {args.data}')
 
     model = net()
@@ -219,7 +223,8 @@ def main(args):
                   criterion,
                   optimizer,
                   device,
-                  hook)
+                  hook,
+                  early_stopping=args.early_stopping_rounds)
     toc = time.perf_counter()
     logger.info(f"Training took {toc - tic:0.4f} seconds")
 
@@ -238,6 +243,9 @@ if __name__=='__main__':
     parser.add_argument('--batch-size',
                         type=int,
                         default=32)
+    parser.add_argument('--early-stopping-rounds',
+                        type=int,
+                        default=10)
     parser.add_argument('--data', type=str,
                         default=os.environ['SM_CHANNEL_TRAINING'])
     parser.add_argument('--model_dir',

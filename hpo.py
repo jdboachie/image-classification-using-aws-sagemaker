@@ -47,7 +47,8 @@ def train(model,
           validation_loader,
           criterion,
           optimizer,
-          device):
+          device,
+          early_stopping):
 
     epochs = 2
     best_loss = 1e6
@@ -108,7 +109,8 @@ def train(model,
                                                                                         epoch_loss,
                                                                                         epoch_acc,
                                                                                         best_loss))
-        if loss_counter == 1:
+        if loss_counter == early_stopping:
+            logger.info('Early stopping')
             break
     return model
 
@@ -195,7 +197,7 @@ def create_data_loaders(data, batch_size):
 
 
 def main(args):
-    logger.info(f'Hyperparameters are LR: {args.learning_rate}, Batch Size: {args.batch_size}')
+    logger.info(f'Hyperparameters are LR: {args.learning_rate}, Batch Size: {args.batch_size}, Early Stopping: {args.early_stopping_rounds}')
     logger.info(f'Data Paths: {args.data}')
 
     model = net()
@@ -212,7 +214,8 @@ def main(args):
                   validation_loader,
                   criterion,
                   optimizer,
-                  device)
+                  device,
+                  early_stopping=args.early_stopping_rounds)
 
     logger.info("Testing the model")
     test(model, test_loader, criterion, device)
@@ -229,6 +232,9 @@ if __name__=='__main__':
     parser.add_argument('--batch-size',
                         type=int,
                         default=32)
+    parser.add_argument('--early-stopping-rounds',
+                        type=int,
+                        default=10)
     parser.add_argument('--data', type=str,
                         default=os.environ['SM_CHANNEL_TRAINING'])
     parser.add_argument('--model_dir',
